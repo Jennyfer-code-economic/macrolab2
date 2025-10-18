@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MacroLab – Plataforma de Análise Macroeconômica</title>
+
+<!-- ===== Estilos principais ===== -->
+<style>
+  :root {
+    --bg: #000;
+    --gold: #D4AF37;
+    --text: #fff;
+    --card: #111;
+  }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: #0a0a0a;
+    color: var(--gold);
+    padding: 16px;
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: bold;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #111;
+    border-bottom: 1px solid var(--gold);
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: var(--text);
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  nav button.active {
+    border-bottom: 2px solid var(--gold);
+    color: var(--gold);
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .card {
+    background: var(--card);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(212,175,55,0.1);
+  }
+  .indices { display: flex; flex-wrap: wrap; gap: 12px; }
+  .indice {
+    background: #1b1b1b;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    padding: 10px;
+    flex: 1 1 140px;
+    text-align: center;
+  }
+  .indice h3 { color: var(--gold); margin: 4px 0; }
+  .btn {
+    background: var(--gold);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  textarea, input, select {
+    width: 100%; padding: 8px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #111; color: var(--text);
+  }
+  canvas { width: 100%; height: 300px; }
+  .toast {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--gold); color: #000;
+    padding: 12px 16px; border-radius: 8px;
+    font-weight: bold; opacity: 0.95;
+  }
+
+  /* Botão que abre o modal */
+  #openUpload {
+    margin-top: 8px;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* Modal (balão) */
+  #uploadModal {
+    display: none; /* começa escondido */
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card);
+    color: var(--text);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    z-index: 1000;
+    width: 320px;
+  }
+
+  /* Fundo escuro atrás do modal */
+  #modalBackdrop {
+    display: none;
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+    z-index: 900;
+  }
+
+  /* Botão de fechar */
+  #uploadModal button.closeModal {
+    background: #444;
+    color: #fff;
+    border: none;
+    float: right;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+</style>
+
+<!-- ===== MathJax e Chart.js ===== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+<header>⚖️ MacroLab – Laboratório Macroeconômico</header>
+<nav>
+  <button data-tab="visao" class="active">Visão Geral</button>
+  <button data-tab="teorias">Teorias</button>
+  <button data-tab="formulas">Fórmulas</button>
+  <button data-tab="dados">Dados</button>
+  <button data-tab="notas">Anotações</button>
+  <button data-tab="alertas">Alertas</button>
+  <button data-tab="cenarios">Cenários</button>
+  <button data-tab="timeline">Timeline</button>
+</nav>
+
+<!-- ===== VISÃO GERAL ===== -->
+<section id="visao" class="tab active">
+  <div class="container">
+    <div class="card">
+      <h2>Indicadores recentes</h2>
+      <div class="indices">
+        <div class="indice"><h3 id="val-selic">--</h3><p>Selic</p></div>
+        <div class="indice"><h3 id="val-ipca">--</h3><p>IPCA</p></div>
+        <div class="indice"><h3 id="val-ibcbr">--</h3><p>IBC-Br</p></div>
+        <div class="indice"><h3 id="val-desemp">--</h3><p>Desemprego</p></div>
+        <div class="indice"><h3 id="val-pib">--</h3><p>PIB</p></div>
+        <div class="indice"><h3 id="val-pibpc">--</h3><p>PIB per capita</p></div>
+        <div class="indice"><h3 id="val-igpm">--</h3><p>IGP-M</p></div>
+        <div class="indice"><h3 id="val-ipca15">--</h3><p>IPCA-15</p></div>
+        <div class="indice"><h3 id="val-inpc">--</h3><p>INPC</p></div>
+      </div>
+    </div>
+
+    <!-- ===== Card com botão apenas ===== -->
+    <div class="card">
+      <h2>Atualizar indicadores manualmente</h2>
+      <button id="openUpload">📂 Carregar CSV</button>
+    </div>
+
+    <div class="card">
+      <h2>Sobre</h2>
+      <p><strong>MacroLab</strong> é uma plataforma independente para estudo, análise e simulação macroeconômica com dados oficiais brasileiros, teorias e fórmulas renderizadas com MathJax, e gráficos interativos Chart.js.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEORIAS ===== -->
+<section id="teorias" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Principais teorias</h2>
+      <p>• Keynesianismo: política fiscal ativa para estabilizar a demanda agregada.</p>
+      <p>• Monetarismo (Friedman): controle da oferta monetária para estabilidade de preços.</p>
+      <p>• Nova Síntese Neoclássica: combina expectativas racionais e rigidez nominal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FÓRMULAS ===== -->
+<section id="formulas" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Fórmulas macroeconômicas</h2>
+      <p>Curva IS: \( Y = C(Y - T) + I(r) + G + NX \)</p>
+      <p>Curva Phillips: \( \pi_t = \pi_t^e - \alpha(u_t - u_n) + \varepsilon_t \)</p>
+      <p>Oferta monetária: \( M \times V = P \times Y \)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DADOS ===== -->
+<section id="dados" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Visualização de séries</h2>
+      <select id="serieSelect">
+        <option value="11">Selic (11)</option>
+        <option value="433">IPCA (433)</option>
+        <option value="24363">IBC-Br (24363)</option>
+        <option value="24369">Taxa de desocupação (24369)</option>
+      </select>
+      <canvas id="chart"></canvas>
+      <button class="btn" id="exportCSV">Exportar CSV</button>
+      <button class="btn" id="exportJSON">Exportar JSON</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ANOTAÇÕES ===== -->
+<section id="notas" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Minhas anotações</h2>
+      <input id="noteTitle" placeholder="Título"><br><br>
+      <textarea id="noteText" rows="5" placeholder="Digite sua anotação"></textarea><br><br>
+      <button class="btn" id="saveNote">Salvar</button>
+      <div id="notesList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ALERTAS ===== -->
+<section id="alertas" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Regras de alerta</h2>
+      <p>Exemplo: <code>value > 10</code> dispara se o valor do índice atual for maior que 10.</p>
+      <input id="alertExpr" placeholder="Digite expressão JS, ex: value > 6">
+      <button class="btn" id="addAlert">Adicionar regra</button>
+      <ul id="alertList"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CENÁRIOS ===== -->
+<section id="cenarios" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Cenários Macroeconômicos</h2>
+      <p>Simule choques na economia alterando parâmetros:</p>
+      <label>PIB inicial (tri R$):</label><input id="pibInit" type="number" value="7.5">
+      <label>Inflação (%):</label><input id="inflacao" type="number" value="4.5">
+      <label>Selic (%):</label><input id="selicSim" type="number" value="10.5">
+      <label>Choque fiscal (% PIB):</label><input id="choque" type="number" value="1.0"><br><br>
+      <button class="btn" id="simular">Simular cenário</button>
+      <div id="resultadoCenario"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TIMELINE ===== -->
+<section id="timeline" class="tab">
+  <div class="container">
+    <div class="card">
+      <h2>Timeline Econômica</h2>
+      <p>Adicione eventos históricos, análises e vídeos de pesquisadores.</p>
+
+      <!-- Formulário para novo post -->
+      <label>Título:</label>
+      <input type="text" id="tituloPost" placeholder="Ex: Plano Real (1994)">
+
+      <label>Descrição:</label>
+      <textarea id="textoPost" placeholder="Resumo ou análise do evento..."></textarea>
+
+      <label>Imagem (opcional):</label>
+      <input type="file" id="imagemPost" accept="image/*">
+
+      <label>Vídeo do YouTube (cole o link):</label>
+      <input type="text" id="videoPost" placeholder="https://www.youtube.com/watch?v=xxxxx">
+
+      <button class="btn" id="addPost">Adicionar Post</button>
+
+      <hr>
+      <h3>Linha do Tempo</h3>
+      <div id="postsContainer"></div>
+    </div>
+  </div>
+</section>
+
+<div id="toastContainer"></div>
+
+<!-- ===== Modal e backdrop fora do card ===== -->
+<div id="modalBackdrop"></div>
+<div id="uploadModal">
+  <button class="closeModal">✖</button>
+  <h3>Upload de CSV</h3>
+  <input type="file" id="fileInput" accept=".csv">
+  <p>Formato CSV: chave,valor (ex: selic,13.75)</p>
+</div>
+
+<script>
+/* ========= Funções básicas ========= */
+const tabs = document.querySelectorAll('nav button');
+tabs.forEach(b => b.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(b.dataset.tab).classList.add('active');
+}));
+
+function showToast(msg, ms=4000){
+  const d=document.createElement('div');
+  d.className='toast'; d.textContent=msg;
+  document.getElementById('toastContainer').appendChild(d);
+  setTimeout(()=>d.remove(), ms);
+}
+
+/* ========= Modal CSV ========= */
+const openBtn=document.getElementById('openUpload');
+const modal=document.getElementById('uploadModal');
+const backdrop=document.getElementById('modalBackdrop');
+const closeBtn=document.querySelector('#uploadModal .closeModal');
+
+openBtn.addEventListener('click',()=>{
+  modal.style.display='block';
+  backdrop.style.display='block';
+});
+closeBtn.addEventListener('click',()=>{
+  modal.style.display='none';
+  backdrop.style.display='none';
+});
+backdrop.addEventListener('click',()=>{
+  modal.style.display='none';
+  backdrop.style.display='none';
+});
+
+/* ========= Obter séries do Bacen ========= */
+async function fetchSerie(code) {
+  const url = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${code}/dados?formato=json&dataInicial=01/01/2022&dataFinal=17/10/2025`;
+  try {
+    const r = await fetch(url);
+    return await r.json();
+  } catch(e){
+    showToast("Erro CORS: use proxy ou abra via servidor local.");
+    return [];
+  }
+}
+
+/* ========= Carregar índices principais ========= */
+async function atualizarPainel() {
+   const codigos = {selic:11, ipca:433, ibcbr:24363, desemp:24369, pib:24364, pibpc:24365, igpm:189, ipca15:1893, inpc:187};
+  for (let [key, code] of Object.entries(codigos)) {
+    const data = await fetchSerie(code);
+    if (data.length) {
+      const latest = data.reduce((prev, curr) => {
+        return new Date(curr.data) > new Date(prev.data) ? curr : prev;
+      }, data[0]);
+      const valNum = parseFloat(latest.valor.replace(',','.'));
+      document.getElementById(`val-${key}`).textContent = valNum.toFixed(2);
+    } else {
+      document.getElementById(`val-${key}`).textContent = "--";
+    }
+  }
+}
+atualizarPainel();
+
+/* ========= Gráfico de séries ========= */
+const ctx = document.getElementById('chart').getContext('2d');
+let chart = new Chart(ctx, {
+  type:'line',
+  data:{labels:[], datasets:[{label:'Série',data:[],borderColor:'#D4AF37'}]},
+  options:{scales:{x:{ticks:{color:'#fff'}},y:{ticks:{color:'#fff'}}},plugins:{legend:{labels:{color:'#fff'}}}}
+});
+async function atualizarGrafico(){
+  const code = document.getElementById('serieSelect').value;
+  const data = await fetchSerie(code);
+  const labels = data.map(d=>d.data);
+  const valores = data.map(d=>parseFloat(d.valor.replace(',','.')));
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = valores;
+  chart.data.datasets[0].label = `Série ${code}`;
+  chart.update();
+}
+document.getElementById('serieSelect').addEventListener('change', atualizarGrafico);
+atualizarGrafico();
+
+/* ========= Exportação CSV/JSON ========= */
+document.getElementById('exportCSV').onclick = ()=>{
+  const labels = chart.data.labels, data = chart.data.datasets[0].data;
+  let csv = "data,valor\n";
+  for(let i=0;i<labels.length;i++) csv+=`${labels[i]},${data[i]}\n`;
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='serie.csv';a.click();
+};
+document.getElementById('exportJSON').onclick = ()=>{
+  const blob = new Blob([JSON.stringify(chart.data.datasets[0].data)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='serie.json';a.click();
+};
+
+/* ========= Notas (localStorage) ========= */
+const notesList=document.getElementById('notesList');
+function renderNotes(){
+  const notes=JSON.parse(localStorage.getItem('macro_notes')||'[]');
+  notesList.innerHTML='';
+  notes.forEach((n,i)=>{
+    const d=document.createElement('div');
+    d.className='card'; d.innerHTML=`<strong>${n.title}</strong><p>${n.text}</p><button class='btn' onclick='delNote(${i})'>Excluir</button>`;
+    notesList.appendChild(d);
+  });
+}
+function delNote(i){
+  let notes=JSON.parse(localStorage.getItem('macro_notes')||'[]');
+  notes.splice(i,1);localStorage.setItem('macro_notes',JSON.stringify(notes));renderNotes();
+}
+document.getElementById('saveNote').onclick=()=>{
+  let notes=JSON.parse(localStorage.getItem('macro_notes')||'[]');
+  notes.push({title:noteTitle.value,text:noteText.value});
+  localStorage.setItem('macro_notes',JSON.stringify(notes));
+  noteTitle.value='';noteText.value='';renderNotes();
+};
+renderNotes();
+
+/* ========= Sistema de alertas ========= */
+let alertRules=[];
+document.getElementById('addAlert').onclick=()=>{
+  const expr=document.getElementById('alertExpr').value;
+  if(expr){alertRules.push(expr);
+    const li=document.createElement('li');li.textContent=expr;
+    document.getElementById('alertList').appendChild(li);}
+};
+async function verificarAlertas(){
+  const data=await fetchSerie(433);
+  if(data.length){
+    const val=parseFloat(data[data.length-1].valor.replace(',','.'));
+    alertRules.forEach(r=>{
+      try{if(eval(r)) showToast(`Alerta! ${r} é verdadeiro (${val})`);}
+      catch(e){console.log(e);}
+    });
+  }
+}
+setInterval(verificarAlertas,60000);
+
+/* ========= Simulador de Cenários ========= */
+document.getElementById('simular').onclick = () => {
+  const pib = parseFloat(document.getElementById('pibInit').value);
+  const inf = parseFloat(document.getElementById('inflacao').value);
+  const sel = parseFloat(document.getElementById('selicSim').value);
+  const choque = parseFloat(document.getElementById('choque').value);
+
+  const novoPIB = pib * (1 + (choque/100) - (inf/100)*0.3 - (sel/100)*0.2);
+
+  document.getElementById('resultadoCenario').innerHTML =
+    `<p>PIB projetado após choque: <strong>${novoPIB.toFixed(2)} tri R$</strong></p>`;
+};
+
+/* ========= Upload CSV ========= */
+document.getElementById('fileInput').addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event){
+        const text = event.target.result;
+        const lines = text.split('\n');
+        lines.forEach(line => {
+            const [key, value] = line.trim().split(',');
+            if(key && value){
+                const el = document.getElementById(`val-${key.toLowerCase()}`);
+                if(el) el.textContent = parseFloat(value).toFixed(2);
+            }
+        });
+        showToast("Indicadores atualizados pelo arquivo!");
+        modal.style.display='none';
+        backdrop.style.display='none';
+    };
+    reader.readAsText(file);
+});
+
+/* ========= Timeline Econômica ========= */
+function renderTimeline() {
+  const posts = JSON.parse(localStorage.getItem('macro_timeline') || '[]');
+  const container = document.getElementById('postsContainer');
+  container.innerHTML = '';
+
+  posts.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <h3>${p.title}</h3>
+      <p>${p.text}</p>
+      ${p.image ? `<img src="${p.image}" style="max-width:100%; border-radius:6px;">` : ''}
+      ${p.video ? `<iframe width="100%" height="315" src="${p.video}" frameborder="0" allowfullscreen></iframe>` : ''}
+      <button class="btn" onclick="deletePost(${i})">Excluir</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function deletePost(i) {
+  let posts = JSON.parse(localStorage.getItem('macro_timeline') || '[]');
+  posts.splice(i, 1);
+  localStorage.setItem('macro_timeline', JSON.stringify(posts));
+  renderTimeline();
+}
+
+document.getElementById('addPost').onclick = () => {
+  const title = document.getElementById('tituloPost').value;
+  const text = document.getElementById('textoPost').value;
+  const imageFile = document.getElementById('imagemPost').files[0];
+  const videoInput = document.getElementById('videoPost').value;
+
+  if (!title || !text) {
+    showToast('Título e texto são obrigatórios!');
+    return;
+  }
+
+  let image = '';
+  if (imageFile) {
+    image = URL.createObjectURL(imageFile);
+  }
+
+  let video = '';
+  if (videoInput.includes('watch?v=')) {
+    video = videoInput.replace('watch?v=', 'embed/');
+  }
+
+  let posts = JSON.parse(localStorage.getItem('macro_timeline') || '[]');
+  posts.push({ title, text, image, video });
+  localStorage.setItem('macro_timeline', JSON.stringify(posts));
+
+  // Limpa os campos
+  document.getElementById('tituloPost').value = '';
+  document.getElementById('textoPost').value = '';
+  document.getElementById('imagemPost').value = '';
+  document.getElementById('videoPost').value = '';
+
+  renderTimeline();
+  showToast('Post adicionado à Timeline!');
+};
+
+// Renderizar quando abrir a página
+renderTimeline();
+
+
+</script>
+</body>
+</html>
+
