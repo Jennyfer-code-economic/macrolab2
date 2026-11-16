@@ -1,0 +1,3967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argentina — Política Econômica em Perspectiva</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --navy:#12365a;
+  --blue:#2e7fbd;
+  --light:#eaf3fa;
+  --cream:#faf9f6;
+  --ink:#1d2935;
+  --muted:#65727e;
+  --line:#dce4ea;
+  --green:#3b8d72;
+  --red:#b85b55;
+  --gold:#c99b3c;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--cream);
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--ink)
+}
+
+button,input{font:inherit}
+
+.wrap{
+  max-width:1320px;
+  margin:auto;
+  padding:26px
+}
+
+header{
+  background:linear-gradient(120deg,#12365a,#2e7fbd);
+  color:white;
+  padding:42px 46px;
+  border-radius:0 0 24px 24px
+}
+
+header .eyebrow{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  opacity:.8
+}
+
+header h1{
+  font-size:36px;
+  margin:12px 0 8px;
+  font-weight:700
+}
+
+header p{
+  max-width:900px;
+  margin:0;
+  line-height:1.55;
+  color:#eaf3fa
+}
+
+nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  padding:18px 0
+}
+
+nav button{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  padding:10px 15px;
+  border-radius:999px;
+  cursor:pointer
+}
+
+nav button.active{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy)
+}
+
+section{display:none}
+.activeSection{display:block}
+
+.heroGrid{
+  display:grid;
+  grid-template-columns:1.4fr .6fr;
+  gap:18px
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 5px 18px rgba(25,55,80,.05)
+}
+
+.card h2,.card h3{
+  margin:0 0 10px;
+  color:var(--navy)
+}
+
+.card p{
+  line-height:1.55;
+  color:#465461
+}
+
+.big{
+  font-size:42px;
+  font-weight:700;
+  color:var(--navy)
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.grid4{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px
+}
+
+.metric{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px
+}
+
+.metric .label{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.6px
+}
+
+.metric .value{
+  font-size:30px;
+  font-weight:700;
+  color:var(--navy);
+  margin:8px 0
+}
+
+.metric .note{
+  font-size:12px;
+  line-height:1.4;
+  color:#687783
+}
+
+.kicker{
+  margin:28px 0 12px;
+  color:var(--navy);
+  font-size:18px;
+  font-weight:700
+}
+
+.story{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px
+}
+
+.storyItem{
+  border-left:4px solid var(--blue);
+  padding:6px 0 6px 18px
+}
+
+.storyItem strong{
+  display:block;
+  color:var(--navy);
+  margin-bottom:5px
+}
+
+.storyItem span{
+  font-size:13px;
+  color:#5e6b76;
+  line-height:1.5
+}
+
+/* TIMELINE */
+
+.timeline{
+  display:flex;
+  gap:0;
+  overflow:auto;
+  padding:22px 4px
+}
+
+.titem{
+  min-width:150px;
+  text-align:center;
+  position:relative;
+  cursor:pointer
+}
+
+.titem:before{
+  content:"";
+  position:absolute;
+  top:20px;
+  left:0;
+  right:0;
+  height:3px;
+  background:#b9d4e8
+}
+
+.titem:first-child:before{left:50%}
+.titem:last-child:before{right:50%}
+
+.dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--blue);
+  border:4px solid var(--cream);
+  margin:13px auto 10px;
+  position:relative;
+  z-index:2
+}
+
+.titem:hover .dot,
+.titem.sel .dot{
+  background:var(--navy);
+  transform:scale(1.3)
+}
+
+.tdate{
+  font-weight:700;
+  color:var(--navy);
+  font-size:13px
+}
+
+.tevent{
+  font-size:11px;
+  color:var(--muted);
+  padding:4px 12px
+}
+
+/* CHARTS */
+
+.chartBox{
+  height:360px
+}
+
+.chartBox.tall{
+  height:440px
+}
+
+/* FLOW */
+
+.flow{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  align-items:center
+}
+
+.flow .box{
+  background:var(--light);
+  border:1px solid #c9ddea;
+  border-radius:15px;
+  padding:17px;
+  text-align:center;
+  font-weight:700;
+  color:var(--navy)
+}
+
+.arrow{
+  font-size:22px;
+  text-align:center;
+  color:var(--blue)
+}
+
+.callout{
+  background:#eef6fb;
+  border-left:5px solid var(--blue);
+  padding:16px 18px;
+  border-radius:10px;
+  margin:14px 0;
+  color:#344b5d;
+  line-height:1.55
+}
+
+.callout.green{
+  background:#edf7f2;
+  border-color:var(--green)
+}
+
+.callout.gold{
+  background:#fff8e8;
+  border-color:var(--gold)
+}
+
+/* CAMBIO */
+
+.band{
+  margin:24px 0;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:25px
+}
+
+.bandline{
+  height:12px;
+  background:#a9d1ec;
+  border-radius:20px;
+  position:relative;
+  margin:50px 80px 65px
+}
+
+.mark{
+  position:absolute;
+  top:-17px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:var(--navy);
+  border:5px solid white;
+  box-shadow:0 2px 5px #aaa;
+  transform:translateX(-50%)
+}
+
+.lab{
+  position:absolute;
+  top:-76px;
+  transform:translateX(-50%);
+  text-align:center;
+  font-size:13px;
+  color:var(--navy);
+  white-space:nowrap
+}
+
+.lab b{
+  font-size:18px;
+  display:block
+}
+
+.bandLegend{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted)
+}
+
+/* EXPORTAÇÕES */
+
+.exportBars .row{
+  display:grid;
+  grid-template-columns:150px 1fr 90px;
+  gap:12px;
+  align-items:center;
+  margin:13px 0
+}
+
+.bar{
+  height:14px;
+  background:#dcecf6;
+  border-radius:20px;
+  overflow:hidden
+}
+
+.fill{
+  height:100%;
+  background:var(--blue);
+  border-radius:20px
+}
+
+/* SOCIAL */
+
+.social{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px
+}
+
+.socialCard{
+  padding:24px;
+  border-radius:18px;
+  background:white;
+  border:1px solid var(--line)
+}
+
+.socialCard h3{
+  margin-top:0;
+  color:var(--navy)
+}
+
+.score{
+  font-size:48px;
+  font-weight:700;
+  color:var(--navy)
+}
+
+.good{color:var(--green)}
+.warn{color:var(--red)}
+
+/* TABLE */
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  background:white
+}
+
+.table th,.table td{
+  padding:11px;
+  border-bottom:1px solid var(--line);
+  text-align:left
+}
+
+.table th{
+  background:#eef5fa;
+  color:var(--navy)
+}
+
+/* UPLOAD */
+
+input[type=file]{
+  display:none
+}
+
+.upload{
+  display:inline-block;
+  background:var(--navy);
+  color:white;
+  padding:11px 16px;
+  border-radius:10px;
+  cursor:pointer
+}
+
+/* =========================================
+   CARDS DOS PRESIDENTES
+========================================= */
+
+.presidentCard{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  margin-bottom:16px;
+  overflow:hidden;
+  box-shadow:0 5px 18px rgba(25,55,80,.05)
+}
+
+.presidentHeader{
+  width:100%;
+  border:0;
+  background:white;
+  padding:22px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  text-align:left
+}
+
+.presidentHeader:hover{
+  background:#f7fbfe
+}
+
+.presidentInfo{
+  display:flex;
+  align-items:center;
+  gap:16px
+}
+
+.presidentNumber{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold
+}
+
+.presidentName{
+  font-size:19px;
+  font-weight:700;
+  color:var(--navy)
+}
+
+.presidentPeriod{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px
+}
+
+.plus{
+  font-size:27px;
+  color:var(--blue);
+  transition:.2s
+}
+
+.presidentCard.open .plus{
+  transform:rotate(45deg)
+}
+
+.presidentBody{
+  display:none;
+  padding:0 22px 24px;
+  border-top:1px solid var(--line)
+}
+
+.presidentCard.open .presidentBody{
+  display:block
+}
+
+.peopleGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:20px 0
+}
+
+.personBox{
+  background:#f5f9fc;
+  border:1px solid #dce8f0;
+  border-radius:12px;
+  padding:15px
+}
+
+.personBox .role{
+  font-size:10px;
+  text-transform:uppercase;
+  color:var(--muted);
+  letter-spacing:.8px
+}
+
+.personBox .name{
+  font-weight:bold;
+  color:var(--navy);
+  margin-top:6px
+}
+
+.personBox .period{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:5px
+}
+
+.decisionGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:15px
+}
+
+.decision{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:17px;
+  background:white
+}
+
+.decision .tag{
+  display:inline-block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  background:var(--light);
+  color:var(--navy);
+  padding:5px 8px;
+  border-radius:999px;
+  margin-bottom:9px
+}
+
+.decision h4{
+  margin:0 0 7px;
+  color:var(--navy)
+}
+
+.decision p{
+  font-size:13px;
+  line-height:1.5;
+  color:#52616d;
+  margin:0
+}
+
+.impact{
+  margin-top:18px;
+  background:#eef6fb;
+  border-left:4px solid var(--blue);
+  padding:14px 16px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.5
+}
+
+/* =========================================
+   IS LM BP
+========================================= */
+
+.policySelector{
+  display:flex;
+  gap:10px;
+  margin:15px 0 20px;
+  flex-wrap:wrap
+}
+
+.policyBtn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  padding:11px 17px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:bold
+}
+
+.policyBtn.active{
+  background:var(--navy);
+  color:white
+}
+
+.theoryGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px
+}
+
+.theoryPanel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px
+}
+
+.theoryPanel h3{
+  color:var(--navy);
+  margin-top:0
+}
+
+.diagram{
+  position:relative;
+  height:360px;
+  background:#fff;
+  border:1px solid #edf1f4;
+  border-radius:14px;
+  overflow:hidden
+}
+
+.diagram svg{
+  width:100%;
+  height:100%
+}
+
+.theoryExplanation{
+  background:#f6fafc;
+  border:1px solid #dce8ef;
+  border-radius:12px;
+  padding:15px;
+  margin-top:15px
+}
+
+.theoryExplanation strong{
+  color:var(--navy)
+}
+
+.mechanism{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  align-items:center;
+  margin-top:20px
+}
+
+.mechanismBox{
+  background:#eef6fb;
+  border:1px solid #cddfea;
+  border-radius:13px;
+  padding:14px 8px;
+  text-align:center;
+  color:var(--navy);
+  font-size:12px;
+  font-weight:bold
+}
+
+.mechanismArrow{
+  text-align:center;
+  color:var(--blue);
+  font-size:20px
+}
+
+.macroWarning{
+  background:#fff8e8;
+  border-left:5px solid var(--gold);
+  border-radius:10px;
+  padding:15px 18px;
+  margin-top:18px;
+  line-height:1.55;
+  font-size:13px
+}
+
+/* IS-LM BP CURVES */
+
+.curveLabel{
+  font-size:13px;
+  font-weight:bold
+}
+
+/* FOOTER */
+
+footer{
+  padding:35px 0 60px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5
+}
+
+@media(max-width:900px){
+  .heroGrid,
+  .story,
+  .social,
+  .theoryGrid{
+    grid-template-columns:1fr
+  }
+
+  .grid4,
+  .grid3,
+  .peopleGrid,
+  .decisionGrid{
+    grid-template-columns:1fr 1fr
+  }
+
+  .flow{
+    grid-template-columns:1fr
+  }
+
+  .arrow{
+    transform:rotate(90deg)
+  }
+
+  .mechanism{
+    grid-template-columns:1fr
+  }
+
+  .mechanismArrow{
+    transform:rotate(90deg)
+  }
+}
+
+@media(max-width:600px){
+  .grid4,
+  .grid3,
+  .peopleGrid,
+  .decisionGrid{
+    grid-template-columns:1fr
+  }
+
+  header{
+    padding:30px 25px
+  }
+
+  header h1{
+    font-size:28px
+  }
+
+  .wrap{
+    padding:16px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="wrap">
+
+<div class="eyebrow">
+Economia Monetária e Financeira
+</div>
+
+<h1>
+Argentina: de inflação alta à busca por estabilidade
+</h1>
+
+<p>
+Um painel para entender a economia argentina conectando inflação,
+juros, câmbio, contas públicas, atividade, comércio exterior e
+condições sociais — sem olhar cada indicador isoladamente.
+</p>
+
+</div>
+</header>
+
+
+<div class="wrap">
+
+<nav>
+
+<button class="active" onclick="show('visao',this)">
+Visão geral
+</button>
+
+<button onclick="show('inflacao',this)">
+Inflação
+</button>
+
+<button onclick="show('juros',this)">
+Juros & moeda
+</button>
+
+<button onclick="show('fiscal',this)">
+Fiscal & câmbio
+</button>
+
+<button onclick="show('externo',this)">
+Comércio exterior
+</button>
+
+<button onclick="show('social',this)">
+Economia & sociedade
+</button>
+
+<button onclick="show('hist',this)">
+História 2017–2026
+</button>
+
+<button onclick="show('teoria',this)">
+IS–LM–BP
+</button>
+
+<button onclick="show('dados',this)">
+Meus dados
+</button>
+
+</nav>
+
+
+<!-- =====================================================
+     VISÃO GERAL
+====================================================== -->
+
+<section id="visao" class="activeSection">
+
+<div class="heroGrid">
+
+<div class="card">
+
+<h2>A pergunta central</h2>
+
+<p>
+Depois de anos de inflação elevada, déficit fiscal, perda de reservas
+e mudanças no regime cambial, a Argentina conseguiu reduzir o ritmo
+de alta dos preços. Mas estabilidade de preços não significa,
+sozinha, que a população esteja melhor.
+</p>
+
+<div class="callout">
+
+<b>Como ler o painel:</b>
+
+primeiro veja o que mudou; depois veja qual política ajudou;
+por fim, compare o resultado macroeconômico com emprego,
+renda e desenvolvimento.
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Retrato recente</h2>
+
+<div class="big">0,865</div>
+
+<div class="small">
+IDH — dado do PNUD, referência 2023
+</div>
+
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+
+<div class="big">7,9%</div>
+
+<div class="small">
+desocupação — 2º trimestre de 2026
+</div>
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+Os 5 movimentos que contam a história
+</div>
+
+<div class="grid4">
+
+<div class="metric">
+
+<div class="label">
+Inflação
+</div>
+
+<div class="value">
+↓
+</div>
+
+<div class="note">
+O ritmo mensal caiu ao longo de 2026, embora continue sendo uma preocupação.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Fiscal
+</div>
+
+<div class="value">
++
+</div>
+
+<div class="note">
+O governo manteve superávit primário, reduzindo a necessidade de financiar o déficit.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Câmbio
+</div>
+
+<div class="value">
+↔
+</div>
+
+<div class="note">
+O peso passou a operar com mais flexibilidade dentro de bandas.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Externo
+</div>
+
+<div class="value">
+↑
+</div>
+
+<div class="note">
+Exportações e saldo comercial ganharam força, ajudando a recompor dólares.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+A lógica econômica em uma imagem
+</div>
+
+<div class="card">
+
+<div class="flow">
+
+<div class="box">
+Equilíbrio fiscal
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Menos emissão para financiar o governo
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Controle monetário
+</div>
+
+</div>
+
+
+<div style="height:10px"></div>
+
+
+<div class="flow">
+
+<div class="box">
+Menor pressão sobre preços
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Expectativas melhoram
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Inflação desacelera
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INFLAÇÃO
+====================================================== -->
+
+<section id="inflacao">
+
+<div class="card">
+
+<h2>
+Inflação: o que realmente mudou?
+</h2>
+
+<p>
+O ponto importante não é dizer que “os preços caíram”.
+Eles não necessariamente caíram: o que caiu foi a
+<b>velocidade com que os preços aumentam</b>.
+Isso é desinflação.
+</p>
+
+<div class="chartBox">
+<canvas id="ipcChart"></canvas>
+</div>
+
+</div>
+
+
+<div class="story" style="margin-top:18px">
+
+<div class="storyItem">
+
+<strong>
+Quando a inflação acelera
+</strong>
+
+<span>
+O salário perde poder de compra mais rapidamente,
+contratos precisam ser reajustados e empresas têm mais
+dificuldade para planejar custos e preços.
+</span>
+
+</div>
+
+
+<div class="storyItem">
+
+<strong>
+Quando a inflação desacelera
+</strong>
+
+<span>
+O planejamento melhora. Mas a população pode continuar
+sentindo o peso dos preços acumulados dos anos anteriores.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="callout gold">
+
+<b>Observação:</b>
+
+desinflação não é deflação. A inflação pode cair de 3% para 2%
+e, ainda assim, os preços continuarem subindo.
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     JUROS
+====================================================== -->
+
+<section id="juros">
+
+<div class="card">
+
+<h2>
+Juros: a taxa básica mudou de papel ao longo do tempo
+</h2>
+
+<p>
+A história da taxa argentina não é uma linha reta.
+O BCRA mudou seus instrumentos e seu modo de conduzir
+a política monetária conforme o regime econômico.
+</p>
+
+<div class="chartBox tall">
+<canvas id="rateChart"></canvas>
+</div>
+
+</div>
+
+
+<div class="kicker">
+Como a política monetária mudou?
+</div>
+
+<div class="grid3">
+
+<div class="metric">
+
+<div class="label">
+2017–2018
+</div>
+
+<div class="value">
+Taxa
+</div>
+
+<div class="note">
+O BCRA usava a taxa de política como instrumento central
+e buscava controlar a inflação.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+2019–2023
+</div>
+
+<div class="value">
+Instabilidade
+</div>
+
+<div class="note">
+Mudanças de regime, inflação elevada e restrições cambiais
+alteraram o funcionamento da política.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+2023–2026
+</div>
+
+<div class="value">
+Novo foco
+</div>
+
+<div class="note">
+A política passou a dar grande peso ao controle da quantidade
+de moeda e à eliminação do financiamento monetário do déficit.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="callout">
+
+A taxa de juros não deve ser analisada sozinha.
+Na Argentina, <b>fiscal, moeda e câmbio</b> estão muito ligados
+à dinâmica da inflação.
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FISCAL
+====================================================== -->
+
+<section id="fiscal">
+
+<div class="grid3">
+
+<div class="metric">
+
+<div class="label">
+Superávit primário
+</div>
+
+<div class="value">
++
+</div>
+
+<div class="note">
+Receitas menos gastos públicos, antes dos juros da dívida.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Juros
+</div>
+
+<div class="value">
+−
+</div>
+
+<div class="note">
+O pagamento de juros pode transformar um superávit primário
+em resultado financeiro negativo.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Resultado financeiro
+</div>
+
+<div class="value">
+Saldo
+</div>
+
+<div class="note">
+É o resultado depois de considerar os juros.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+Resultado fiscal: da sequência de déficits ao superávit
+</div>
+
+<div class="card">
+
+<h2>Resultado primário e financeiro (% do PIB)</h2>
+
+<p>
+<b>Resultado primário</b> = receitas menos gastos primários, antes dos juros.
+<b>Resultado financeiro</b> = resultado depois dos juros da dívida.
+</p>
+
+<div class="chartBox tall">
+<canvas id="fiscalChart"></canvas>
+</div>
+
+<div class="callout green">
+<b>2024 marca a virada:</b> superávit primário de <b>1,8% do PIB</b> e superávit financeiro de <b>0,3% do PIB</b>.
+</div>
+
+<div class="small">
+Fonte: BCRA e Ministério da Economia/INDEC. Série 2017–2024.
+</div>
+
+</div>
+
+
+<div class="kicker">
+Câmbio: evolução do peso desde 2017
+</div>
+
+<div class="card">
+
+<h2>Pesos por US$ 1</h2>
+
+<p>
+Quanto maior o número de pesos necessários para comprar US$ 1, maior a desvalorização nominal do peso.
+</p>
+
+<div class="chartBox tall">
+<canvas id="exchangeChart"></canvas>
+</div>
+
+<div class="small">
+Fonte: séries históricas do câmbio. Valores anuais de referência, 2017–2026.
+</div>
+
+</div>
+
+
+<div class="kicker">
+Câmbio: por que a banda importa?
+</div>
+
+<div class="band">
+
+<div class="bandline">
+
+<div class="mark" style="left:0%">
+
+<div class="lab">
+
+<b>Piso</b>
+US$ 715,12
+
+</div>
+
+</div>
+
+
+<div class="mark" style="left:52%">
+
+<div class="lab">
+
+<b>Observado</b>
+US$ 1.549,75
+
+</div>
+
+</div>
+
+
+<div class="mark" style="left:100%">
+
+<div class="lab">
+
+<b>Teto</b>
+US$ 1.943,56
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="bandLegend">
+
+<span>
+Menor quantidade de pesos por US$
+</span>
+
+<span>
+Maior quantidade de pesos por US$
+</span>
+
+</div>
+
+
+<div class="callout">
+
+Dentro da banda, o câmbio pode variar.
+Isso permite que o preço do dólar se ajuste sem exigir
+que o Banco Central defenda um único valor o tempo todo.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     COMÉRCIO EXTERIOR
+====================================================== -->
+
+<section id="externo">
+
+<div class="card">
+
+<h2>
+O que a Argentina vende para o mundo?
+</h2>
+
+<p>
+A Argentina tem forte presença internacional em
+<b>agroindústria</b>, mas sua pauta não se limita à agricultura.
+Soja e derivados, milho, trigo, carne bovina, petróleo e gás,
+mineração e alguns produtos industriais aparecem entre os
+grandes motores externos.
+</p>
+
+
+<div class="exportBars">
+
+<div class="row">
+
+<span>
+Soja e derivados
+</span>
+
+<div class="bar">
+<div class="fill" style="width:92%"></div>
+</div>
+
+<b>
+Alta relevância
+</b>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Milho
+</span>
+
+<div class="bar">
+<div class="fill" style="width:82%"></div>
+</div>
+
+<b>
+Alta relevância
+</b>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Trigo
+</span>
+
+<div class="bar">
+<div class="fill" style="width:65%"></div>
+</div>
+
+<b>
+Relevante
+</b>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Carne bovina
+</span>
+
+<div class="bar">
+<div class="fill" style="width:58%"></div>
+</div>
+
+<b>
+Relevante
+</b>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Petróleo e gás
+</span>
+
+<div class="bar">
+<div class="fill" style="width:55%"></div>
+</div>
+
+<b>
+Em expansão
+</b>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Mineração
+</span>
+
+<div class="bar">
+<div class="fill" style="width:43%"></div>
+</div>
+
+<b>
+Crescente
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="grid3" style="margin-top:18px">
+
+<div class="metric">
+
+<div class="label">
+Jan–Set/2026
+</div>
+
+<div class="value">
+US$ 77,3 bi
+</div>
+
+<div class="note">
+Exportações de bens.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Saldo comercial
+</div>
+
+<div class="value">
+US$ 21,2 bi
+</div>
+
+<div class="note">
+Superávit de janeiro a setembro de 2026.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Agroindústria 2025
+</div>
+
+<div class="value">
+US$ 52,3 bi
+</div>
+
+<div class="note">
+Valor exportado; 115,4 milhões de toneladas.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="callout green">
+
+<b>
+Por que isso importa para a política monetária?
+</b>
+
+Exportações trazem dólares. Mais dólares podem ajudar
+o país a acumular reservas, reduzir pressões cambiais
+e melhorar a capacidade de enfrentar choques externos.
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SOCIAL
+====================================================== -->
+
+<section id="social">
+
+<div class="social">
+
+<div class="socialCard">
+
+<h3>
+Desenvolvimento humano
+</h3>
+
+<div class="score">
+0,865
+</div>
+
+<p>
+O IDH reúne saúde, educação e renda. Por isso,
+ele ajuda a lembrar que estabilidade monetária
+é um meio, não o objetivo final da economia.
+</p>
+
+<span class="small">
+PNUD — valor divulgado no Country Insights, referência 2023.
+</span>
+
+</div>
+
+
+<div class="socialCard">
+
+<h3>
+Mercado de trabalho
+</h3>
+
+<div class="score">
+7,9%
+</div>
+
+<p>
+Taxa de desocupação no 2º trimestre de 2026.
+Uma política econômica pode melhorar inflação e
+contas públicas e, ao mesmo tempo, enfrentar
+dificuldades no mercado de trabalho.
+</p>
+
+<span class="small">
+INDEC — 2º trimestre de 2026.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+Pobreza: o custo social do ajuste e a recuperação posterior
+</div>
+
+<div class="card">
+
+<h2>
+A pobreza primeiro subiu — depois recuou
+</h2>
+
+<p>
+O ajuste iniciado no fim de 2023 veio acompanhado de um forte choque sobre a renda.
+A pobreza atingiu <b>52,9% da população no 1º semestre de 2024</b>.
+Depois, caiu para <b>38,1%</b> no 2º semestre de 2024, <b>31,6%</b> no 1º semestre de 2025,
+<b>28,2%</b> no 2º semestre de 2025 e <b>32,3%</b> no 1º semestre de 2026.
+</p>
+
+<div class="chartBox" style="height:340px">
+<canvas id="povertyChart"></canvas>
+</div>
+
+<p class="small" style="margin-top:10px">
+Fonte: INDEC — pessoas abaixo da linha de pobreza, 31 aglomerados urbanos.
+</p>
+
+<div class="callout gold">
+
+<b>Como interpretar:</b>
+
+A queda da pobreza depois do pico de 2024 é um resultado social importante,
+mas ela não significa que todos os grupos tenham recuperado renda ou poder de compra
+da mesma forma. A estabilização macroeconômica e o impacto distributivo do ajuste
+precisam ser analisados juntos.
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+Previdência: quem pagou parte importante do ajuste?
+</div>
+
+<div class="card">
+
+<h2>
+Poder de compra dos aposentados
+</h2>
+
+<p>
+O efeito sobre os aposentados foi desigual. Para visualizar a trajetória de longo prazo, o gráfico usa um
+<b>índice de poder de compra com 2015 = 100</b>. A aposentadoria mínima + bônus caiu de 96 em 2017
+para 69 em 2025. Em agosto de 2026, uma estimativa baseada na comparação oficial de poder de compra
+indica aproximadamente 50 pontos no mesmo índice. Isso mostra que o problema previdenciário não começou
+com Milei, mas o ajuste de 2024–2026 aprofundou a perda para quem depende da renda mínima.
+</p>
+
+<div class="chartBox" style="height:340px">
+<canvas id="pensionChart"></canvas>
+</div>
+
+<p class="small" style="margin-top:10px">
+Índice 2015=100. Quanto menor o índice, menor o poder de compra da aposentadoria em relação a 2015.
+2017–2025: CIFRA, com base em ANSES/Ministério da Economia e índices de preços. *ago/26: estimativa
+derivada da perda acumulada frente a dezembro de 2019 divulgada em 2026. Fonte: CIFRA e La Nación.
+</p>
+
+<div class="story" style="margin-top:18px">
+
+<div class="storyItem">
+
+<strong>
+Aposentadoria mínima
+</strong>
+
+<span>
+O poder de compra do benefício mínimo + bônus caiu para cerca de <b>68 pontos em 2024</b> e
+<b>69 em 2025</b>, contra 96 em 2017. Em agosto de 2026, a estimativa chega a aproximadamente
+<b>50 pontos</b> no mesmo índice.
+</span>
+
+</div>
+
+
+<div class="storyItem">
+
+<strong>
+Benefícios acima da mínima
+</strong>
+
+<span>
+Os benefícios acima da mínima também acumulam perda relevante. O índice passou de
+<b>81 em 2019 para 50 em 2024</b> e 56 em 2025, segundo a série do CIFRA.
+</span>
+
+</div>
+
+</div>
+
+<div class="callout">
+
+<b>O ponto econômico:</b>
+
+não basta olhar o valor nominal da aposentadoria. O que importa para o bem-estar
+é quantos bens e serviços aquele rendimento consegue comprar depois da inflação.
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+Universidades públicas: ajuste fiscal também chegou à educação
+</div>
+
+<div class="card">
+
+<h2>
+O impacto sobre as universidades
+</h2>
+
+<div class="grid3">
+
+<div class="metric">
+
+<div class="label">
+2025 vs. 2024
+</div>
+
+<div class="value">
+−6%
+</div>
+
+<div class="note">
+Queda real do orçamento destinado às universidades.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+2025 vs. 2023
+</div>
+
+<div class="value">
+−29%
+</div>
+
+<div class="note">
+Queda real acumulada no orçamento universitário.
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+Efeito social
+</div>
+
+<div class="value">
+↑ pressão
+</div>
+
+<div class="note">
+Menos recursos pressionam salários, pesquisa, infraestrutura e funcionamento das universidades.
+</div>
+
+</div>
+
+</div>
+
+<div class="callout gold" style="margin-top:18px">
+
+<b>Fonte:</b> Anistia Internacional, relatório sobre direitos econômicos e sociais na Argentina.
+
+O orçamento de 2025 para universidades ficou 6% abaixo de 2024 em termos reais
+e acumulou queda de 29% em relação a 2023.
+
+</div>
+
+</div>
+
+
+<div class="kicker">
+A pergunta que fecha a análise
+</div>
+
+
+<div class="card">
+
+<h2>
+Estabilidade para quem?
+</h2>
+
+<p>
+Uma avaliação completa precisa olhar duas dimensões ao mesmo tempo:
+<b>estabilidade macroeconômica</b> e <b>condições de vida</b>.
+No caso de Milei, a inflação e o déficit recuaram, enquanto a pobreza
+caiu depois do choque inicial. Porém, o custo do ajuste foi distribuído
+de forma desigual, com forte pressão sobre aposentadorias mínimas e
+universidades públicas.
+</p>
+
+
+<div class="story">
+
+<div class="storyItem">
+
+<strong>
+O ganho
+</strong>
+
+<span>
+Menor inflação facilita planejamento, reduz a necessidade
+de reajustes constantes e pode melhorar o ambiente para
+investimento e crédito. A pobreza também recuou fortemente
+após o pico do primeiro semestre de 2024.
+</span>
+
+</div>
+
+
+<div class="storyItem">
+
+<strong>
+O desafio
+</strong>
+
+<span>
+O ajuste fiscal reduziu gastos, mas gerou custos distributivos.
+A pergunta econômica é como sustentar a estabilidade sem
+comprometer a renda dos grupos mais vulneráveis e o acesso
+a serviços públicos, como educação superior.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GRÁFICOS — ECONOMIA & SOCIEDADE
+   Estes gráficos pertencem exclusivamente à aba social.
+====================================================== */
+
+new Chart(document.getElementById('povertyChart'),{
+
+type:'line',
+
+data:{
+labels:[
+'2º sem/17','2º sem/18','2º sem/19','2º sem/20','2º sem/21',
+'2º sem/22','2º sem/23','2º sem/24','2º sem/25','1º sem/26'
+],
+
+datasets:[{
+label:'Pobreza — pessoas (%)',
+data:[25.7,32.0,35.5,42.0,37.3,39.2,41.7,38.1,28.2,32.3],
+borderColor:'#b85b55',
+backgroundColor:'rgba(184,91,85,.10)',
+pointBackgroundColor:'#12365a',
+pointRadius:4,
+borderWidth:3,
+tension:.25,
+fill:true
+}]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:true}},
+scales:{
+y:{
+beginAtZero:false,
+grid:{color:'#e7edf1'},
+title:{display:true,text:'% da população'}
+},
+x:{grid:{display:false}}
+}
+}
+
+});
+
+
+new Chart(document.getElementById('pensionChart'),{
+
+type:'bar',
+
+data:{
+labels:['2017','2018','2019','2020','2021','2022','2023','2024','2025','ago/26*'],
+
+datasets:[
+{
+label:'Poder de compra — mínima + bônus (índice 2015=100)',
+data:[96,90,84,87,81,81,80,68,69,49.8],
+backgroundColor:'#b85b55'
+},
+{
+label:'Poder de compra — índice 2015=100',
+data:[96,89,81,83,77,74,62,50,56,49.8],
+backgroundColor:'#3b8d72'
+}
+]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:true}},
+scales:{
+y:{
+min:35,
+max:105,
+grid:{color:'#e7edf1'},
+title:{display:true,text:'Índice de poder de compra (2015=100)'}
+},
+x:{grid:{display:false}}
+}
+}
+
+});
+
+</script>
+
+</section>
+
+
+
+<!-- =====================================================
+     HISTÓRIA
+====================================================== -->
+
+<section id="hist">
+
+<div class="card">
+
+<h2>
+2017–2026: uma história de mudanças de regime
+</h2>
+
+<div class="timeline" id="timeline"></div>
+
+<div id="histText" class="callout">
+
+Clique em um período para entender o que estava acontecendo.
+
+</div>
+
+</div>
+
+
+
+<div class="kicker">
+Presidentes, ministros e decisões que mudaram o rumo da economia
+</div>
+
+
+<!-- ===================== MACRI ===================== -->
+
+<div class="presidentCard">
+
+<button class="presidentHeader">
+
+<div class="presidentInfo">
+
+<div class="presidentNumber">
+1
+</div>
+
+<div>
+
+<div class="presidentName">
+Mauricio Macri
+</div>
+
+<div class="presidentPeriod">
+2015–2019 | foco da análise: 2017–2019
+</div>
+
+</div>
+
+</div>
+
+<div class="plus">
++
+</div>
+
+</button>
+
+
+<div class="presidentBody">
+
+<div class="peopleGrid">
+
+<div class="personBox">
+
+<div class="role">
+Presidente
+</div>
+
+<div class="name">
+Mauricio Macri
+</div>
+
+<div class="period">
+2015–2019
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministro da Hacienda
+</div>
+
+<div class="name">
+Nicolás Dujovne
+</div>
+
+<div class="period">
+2017–2019
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministro da Hacienda
+</div>
+
+<div class="name">
+Hernán Lacunza
+</div>
+
+<div class="period">
+2019
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Presidente BCRA
+</div>
+
+<div class="name">
+Federico Sturzenegger
+</div>
+
+<div class="period">
+2015–2018
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Presidente BCRA
+</div>
+
+<div class="name">
+Luis Caputo
+</div>
+
+<div class="period">
+2018
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Presidente BCRA
+</div>
+
+<div class="name">
+Guido Sandleris
+</div>
+
+<div class="period">
+2018–2019
+</div>
+
+</div>
+
+</div>
+
+
+<div class="callout gold">
+
+<b>
+Do “gradualismo” ao FMI
+</b>
+
+Após desfazer controles cambiais e comerciais no início do mandato,
+o governo Macri entrou em 2017 apostando em uma redução lenta do
+déficit fiscal, financiada por endividamento externo, para não
+travar o crescimento.
+
+</div>
+
+
+<div class="decisionGrid">
+
+<div class="decision">
+
+<div class="tag">
+2017 — Fiscal
+</div>
+
+<h4>
+Gradualismo fiscal
+</h4>
+
+<p>
+O governo tentou reduzir gradualmente o déficit em vez de realizar
+um ajuste fiscal mais rápido, recorrendo ao financiamento externo
+para sustentar a estratégia.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2017 — Tributária
+</div>
+
+<h4>
+Reformas e abertura
+</h4>
+
+<p>
+Foram aprovadas mudanças tributárias e previdenciárias, com redução
+de impostos sobre exportações agrícolas e tentativa de melhorar
+o ambiente de investimentos.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2017–2018 — Monetária
+</div>
+
+<h4>
+Metas de inflação + juros
+</h4>
+
+<p>
+O BCRA utilizou taxas elevadas como instrumento central da política
+monetária para tentar controlar a inflação e influenciar as expectativas.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2018 — Câmbio
+</div>
+
+<h4>
+Crise do peso
+</h4>
+
+<p>
+A fuga de capitais e a mudança das condições financeiras internacionais
+pressionaram o peso, provocando forte desvalorização.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2018 — FMI
+</div>
+
+<h4>
+Acordo com o FMI
+</h4>
+
+<p>
+O governo recorreu ao Fundo Monetário Internacional diante da crise
+cambial e financeira, abandonando progressivamente a estratégia
+de gradualismo.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2018–2019 — Fiscal
+</div>
+
+<h4>
+Ajuste e controle monetário
+</h4>
+
+<p>
+A estratégia passou a priorizar maior disciplina fiscal, redução
+do financiamento monetário e medidas de estabilização.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="impact">
+
+<b>
+Impacto macroeconômico:
+</b>
+
+o aumento da vulnerabilidade externa ficou evidente quando o fluxo
+de capitais se reverteu. A desvalorização do peso elevou a carga,
+em moeda doméstica, das dívidas denominadas em dólares e voltou a
+pressionar a inflação.
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================== FERNÁNDEZ ===================== -->
+
+<div class="presidentCard">
+
+<button class="presidentHeader">
+
+<div class="presidentInfo">
+
+<div class="presidentNumber">
+2
+</div>
+
+<div>
+
+<div class="presidentName">
+Alberto Fernández
+</div>
+
+<div class="presidentPeriod">
+2019–2023
+</div>
+
+</div>
+
+</div>
+
+<div class="plus">
++
+</div>
+
+</button>
+
+
+<div class="presidentBody">
+
+<div class="peopleGrid">
+
+<div class="personBox">
+
+<div class="role">
+Presidente
+</div>
+
+<div class="name">
+Alberto Fernández
+</div>
+
+<div class="period">
+2019–2023
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministro da Economia
+</div>
+
+<div class="name">
+Martín Guzmán
+</div>
+
+<div class="period">
+2019–2022
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministra da Economia
+</div>
+
+<div class="name">
+Silvina Batakis
+</div>
+
+<div class="period">
+julho–agosto/2022
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministro da Economia
+</div>
+
+<div class="name">
+Sergio Massa
+</div>
+
+<div class="period">
+2022–2023
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Presidente BCRA
+</div>
+
+<div class="name">
+Miguel Ángel Pesce
+</div>
+
+<div class="period">
+2019–2023
+</div>
+
+</div>
+
+</div>
+
+
+<div class="callout">
+
+<b>
+Pandemia, dívida e inflação
+</b>
+
+O governo assumiu em um contexto de elevada inflação,
+restrições cambiais e necessidade de renegociação da dívida.
+Pouco depois, a pandemia alterou profundamente a atividade
+econômica e a política fiscal e monetária.
+
+</div>
+
+
+<div class="decisionGrid">
+
+<div class="decision">
+
+<div class="tag">
+2019–2020 — Dívida
+</div>
+
+<h4>
+Renegociação da dívida
+</h4>
+
+<p>
+O governo buscou reestruturar a dívida pública e reduzir
+as necessidades de financiamento em um contexto de forte
+fragilidade externa.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2020 — Pandemia
+</div>
+
+<h4>
+Resposta fiscal
+</h4>
+
+<p>
+A crise sanitária levou à adoção de medidas emergenciais
+para sustentar renda, empresas e atividade econômica.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2020–2023 — Câmbio
+</div>
+
+<h4>
+Ampliação dos controles cambiais
+</h4>
+
+<p>
+As restrições ao acesso ao mercado oficial de câmbio
+ganharam importância diante da escassez de reservas e
+da pressão sobre o peso.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2021–2023 — Inflação
+</div>
+
+<h4>
+Inflação volta a acelerar
+</h4>
+
+<p>
+A inflação permaneceu elevada e passou a ser um dos
+principais problemas macroeconômicos do período.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="impact">
+
+<b>
+Impacto macroeconômico:
+</b>
+
+a combinação de inflação elevada, controles cambiais,
+restrições externas e baixo espaço fiscal tornou cada vez
+mais difícil coordenar política fiscal, monetária e cambial.
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================== MILEI ===================== -->
+
+<div class="presidentCard">
+
+<button class="presidentHeader">
+
+<div class="presidentInfo">
+
+<div class="presidentNumber">
+3
+</div>
+
+<div>
+
+<div class="presidentName">
+Javier Milei
+</div>
+
+<div class="presidentPeriod">
+2023–presente
+</div>
+
+</div>
+
+</div>
+
+<div class="plus">
++
+</div>
+
+</button>
+
+
+<div class="presidentBody">
+
+<div class="peopleGrid">
+
+<div class="personBox">
+
+<div class="role">
+Presidente
+</div>
+
+<div class="name">
+Javier Milei
+</div>
+
+<div class="period">
+2023–presente
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Ministro da Economia
+</div>
+
+<div class="name">
+Luis Caputo
+</div>
+
+<div class="period">
+2023–presente
+</div>
+
+</div>
+
+
+<div class="personBox">
+
+<div class="role">
+Presidente BCRA
+</div>
+
+<div class="name">
+Santiago Bausili
+</div>
+
+<div class="period">
+2023–presente
+</div>
+
+</div>
+
+</div>
+
+
+<div class="callout green">
+
+<b>
+Ajuste fiscal + desinflação
+</b>
+
+A estratégia passou a colocar o equilíbrio fiscal e a redução
+do financiamento monetário do déficit no centro do programa
+de estabilização.
+
+</div>
+
+
+<div class="decisionGrid">
+
+<div class="decision">
+
+<div class="tag">
+2023–2024 — Fiscal
+</div>
+
+<h4>
+Forte ajuste fiscal
+</h4>
+
+<p>
+O governo priorizou a busca por superávit fiscal, reduzindo
+o desequilíbrio das contas públicas e diminuindo a necessidade
+de financiamento monetário.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2023–2024 — Monetária
+</div>
+
+<h4>
+Mudança na estratégia monetária
+</h4>
+
+<p>
+A política passou a dar maior importância ao controle da
+quantidade de dinheiro e à eliminação do financiamento
+monetário do déficit fiscal.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2024–2026 — Inflação
+</div>
+
+<h4>
+Desinflação
+</h4>
+
+<p>
+A inflação mensal caiu em relação aos níveis extremamente
+elevados observados no final de 2023, embora os preços
+acumulados continuem elevados.
+</p>
+
+</div>
+
+
+<div class="decision">
+
+<div class="tag">
+2025–2026 — Câmbio
+</div>
+
+<h4>
+Maior flexibilidade cambial
+</h4>
+
+<p>
+A política cambial passou a trabalhar com maior flexibilidade,
+incluindo o funcionamento dentro de bandas.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="impact">
+
+<b>
+Impacto macroeconômico:
+</b>
+
+a combinação de ajuste fiscal, menor financiamento monetário
+e mudança do regime cambial procurou quebrar a dinâmica de
+inflação. O grande desafio passou a ser sustentar a estabilização
+sem comprometer excessivamente a atividade e o emprego.
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="callout">
+
+<b>
+Como usar esses cards na apresentação:
+</b>
+
+clique em cada presidente e conte a história como uma sequência:
+
+Macri → endividamento externo e crise cambial → FMI
+
+↓
+
+Fernández → pandemia + dívida + controles cambiais → inflação elevada
+
+↓
+
+Milei → ajuste fiscal + nova estratégia monetária → desinflação
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     IS LM BP
+====================================================== -->
+
+<section id="teoria">
+
+<div class="card">
+
+<h2>
+IS–LM–BP: como a política monetária afeta a economia argentina?
+</h2>
+
+<p>
+
+Aqui você conecta a teoria estudada em Economia Monetária
+e Financeira com o caso argentino.
+
+<b>
+Escolha uma política abaixo.
+</b>
+
+</p>
+
+
+<div class="policySelector">
+
+<button class="policyBtn active"
+onclick="setPolicy('contracionista',this)">
+Política contracionista
+</button>
+
+<button class="policyBtn"
+onclick="setPolicy('expansionista',this)">
+Política expansionista
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="theoryGrid">
+
+<!-- IS LM -->
+
+<div class="theoryPanel">
+
+<h3>
+1. Mercado monetário — IS–LM
+</h3>
+
+<div class="diagram">
+
+<svg viewBox="0 0 500 360">
+
+<!-- eixos -->
+
+<line x1="70" y1="300" x2="450" y2="300"
+stroke="#12365a" stroke-width="3"/>
+
+<line x1="70" y1="300" x2="70" y2="45"
+stroke="#12365a" stroke-width="3"/>
+
+
+<!-- IS -->
+
+<line id="isCurve"
+x1="100" y1="80"
+x2="420" y2="270"
+stroke="#2e7fbd"
+stroke-width="5"/>
+
+
+<!-- LM -->
+
+<line id="lmCurve"
+x1="140" y1="270"
+x2="360" y2="75"
+stroke="#3b8d72"
+stroke-width="5"/>
+
+
+<!-- equilíbrio -->
+
+<circle id="eqPoint"
+cx="285"
+cy="185"
+r="8"
+fill="#12365a"/>
+
+
+<!-- labels -->
+
+<text x="430" y="320"
+fill="#12365a"
+font-weight="bold">
+Y
+</text>
+
+<text x="40" y="55"
+fill="#12365a"
+font-weight="bold">
+i
+</text>
+
+<text x="390" y="260"
+fill="#2e7fbd"
+font-weight="bold">
+IS
+</text>
+
+<text x="350" y="85"
+fill="#3b8d72"
+font-weight="bold">
+LM
+</text>
+
+</svg>
+
+</div>
+
+
+<div class="theoryExplanation" id="isExplanation">
+
+<b>
+Política contracionista:
+</b>
+
+o Banco Central aumenta a taxa de juros. O investimento
+tende a cair, reduzindo a demanda agregada e a atividade.
+
+</div>
+
+</div>
+
+
+
+<!-- AD AS -->
+
+<div class="theoryPanel">
+
+<h3>
+2. Demanda agregada — AD–AS
+</h3>
+
+<div class="diagram">
+
+<svg viewBox="0 0 500 360">
+
+<!-- eixos -->
+
+<line x1="70" y1="300" x2="450" y2="300"
+stroke="#12365a" stroke-width="3"/>
+
+<line x1="70" y1="300" x2="70" y2="45"
+stroke="#12365a" stroke-width="3"/>
+
+
+<!-- AS -->
+
+<line x1="160" y1="265"
+x2="360" y2="75"
+stroke="#3b8d72"
+stroke-width="5"/>
+
+
+<!-- AD original -->
+
+<line id="adCurve"
+x1="100" y1="80"
+x2="420" y2="270"
+stroke="#2e7fbd"
+stroke-width="5"/>
+
+
+<!-- AD deslocada -->
+
+<line id="adShift"
+x1="130" y1="120"
+x2="450" y2="300"
+stroke="#8dbfe2"
+stroke-width="4"
+stroke-dasharray="10 8"/>
+
+
+<text x="430" y="320"
+fill="#12365a"
+font-weight="bold">
+Y
+</text>
+
+<text x="32" y="55"
+fill="#12365a"
+font-weight="bold">
+P
+</text>
+
+<text x="375" y="95"
+fill="#3b8d72"
+font-weight="bold">
+AS
+</text>
+
+<text id="adLabel"
+x="390"
+y="250"
+fill="#2e7fbd"
+font-weight="bold">
+AD
+</text>
+
+</svg>
+
+</div>
+
+
+<div class="theoryExplanation" id="adExplanation">
+
+<b>
+Política contracionista:
+</b>
+
+a demanda agregada se desloca para a esquerda.
+O resultado esperado é menor pressão sobre preços
+e menor produto no curto prazo.
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- MECANISMO -->
+
+<div class="card" style="margin-top:18px">
+
+<h3>
+3. O mecanismo econômico
+</h3>
+
+
+<div class="mechanism" id="mechanism">
+
+<div class="mechanismBox">
+Juros ↑
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Investimento ↓
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Demanda ↓
+</div>
+
+</div>
+
+
+<div class="macroWarning">
+
+<b>
+E onde entra a Argentina?
+</b>
+
+<br><br>
+
+Em uma economia aberta, não podemos parar no IS–LM.
+
+Quando a taxa de juros sobe, ela pode afetar também
+os fluxos de capitais e o câmbio.
+
+No caso argentino, isso é especialmente importante
+porque uma parcela relevante da dívida estava denominada
+em moeda estrangeira.
+
+<br><br>
+
+<b>
+Juros ↑ → fluxo de capitais → câmbio → dívida em US$ → pressão financeira
+</b>
+
+</div>
+
+</div>
+
+
+
+<!-- MECANISMO ARGENTINA -->
+
+<div class="card" style="margin-top:18px">
+
+<h3>
+4. Aplicando ao caso Macri — 2018
+</h3>
+
+
+<div class="flow">
+
+<div class="box">
+Juros elevados
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Tentativa de conter inflação e sustentar o peso
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Mudança no fluxo de capitais
+</div>
+
+</div>
+
+
+<div style="height:12px"></div>
+
+
+<div class="flow">
+
+<div class="box">
+Fuga de capitais
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Peso se desvaloriza
+</div>
+
+<div class="arrow">
+→
+</div>
+
+<div class="box">
+Dívida em US$ fica mais pesada em pesos
+</div>
+
+</div>
+
+
+<div class="callout gold">
+
+<b>
+Atenção para a apresentação:
+</b>
+
+não diga:
+
+<i>
+“Macri aumentou os juros e isso sozinho aumentou a dívida.”
+</i>
+
+Diga:
+
+<i>
+“A política de juros ocorreu em uma economia altamente dependente
+de financiamento externo. Quando a confiança se deteriorou e o
+capital saiu, a forte desvalorização do peso aumentou o valor,
+em moeda doméstica, das dívidas denominadas em dólares.”
+</i>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     DADOS
+====================================================== -->
+
+<section id="dados">
+
+<div class="card">
+
+<h2>
+Coloque os seus dados aqui
+</h2>
+
+<p>
+Esta versão foi preparada para você não precisar refazer o site
+quando atualizar sua base. Exporte sua planilha para
+<b>CSV</b> com as colunas abaixo.
+</p>
+
+
+<label class="upload">
+
+Carregar CSV
+
+<input type="file"
+id="csvFile"
+accept=".csv">
+
+</label>
+
+
+<p class="small">
+
+Formato recomendado:
+
+<b>
+data, ipc, pib, desemprego, balanca, taxa
+</b>
+
+Ex.:
+
+2017-01, 1.2, 0.5, 7.1, 500, 24.75
+
+</p>
+
+
+<div id="uploadStatus"
+class="callout"
+style="display:none">
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:18px">
+
+<h2>
+Estrutura recomendada da sua base
+</h2>
+
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>
+Coluna
+</th>
+
+<th>
+O que representa
+</th>
+
+<th>
+Unidade
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<tr>
+
+<td>
+data
+</td>
+
+<td>
+Mês ou trimestre
+</td>
+
+<td>
+AAAA-MM / AAAA-T1
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+ipc
+</td>
+
+<td>
+Inflação mensal
+</td>
+
+<td>
+%
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+pib
+</td>
+
+<td>
+Crescimento do PIB
+</td>
+
+<td>
+%
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+desemprego
+</td>
+
+<td>
+Taxa de desocupação
+</td>
+
+<td>
+%
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+balanca
+</td>
+
+<td>
+Saldo exportações − importações
+</td>
+
+<td>
+US$ milhões
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+taxa
+</td>
+
+<td>
+Taxa de política monetária
+</td>
+
+<td>
+% a.a.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<footer>
+
+<strong>
+Fontes sugeridas para a pesquisa:
+</strong>
+
+BCRA para política monetária, taxas, reservas e séries monetárias;
+INDEC para IPC, PIB, mercado de trabalho e comércio exterior;
+PNUD para IDH; Ministério da Economia/Secretaria de Agricultura
+para comércio e complexos exportadores.
+
+</footer>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   DADOS DOS GRÁFICOS
+====================================================== */
+
+const ipcLabels=[
+'Nov/25','Dez/25','Jan/26','Fev/26',
+'Mar/26','Abr/26','Mai/26','Jun/26',
+'Jul/26','Ago/26','Set/26','Out/26'
+];
+
+const ipcVals=[
+2.5,2.8,2.9,2.9,3.4,2.6,
+2.1,1.9,2.1,1.7,1.9,2.2
+];
+
+
+const rateLabels=[
+'2017','2018','2019','2020','2021',
+'2022','2023','2024','2025','2026'
+];
+
+const rateVals=[
+28.75,60,55,38,38,75,100,32,29.5,29.0
+];
+
+
+/* =====================================================
+   GRÁFICOS CHART.JS
+====================================================== */
+
+function chartLine(id,labels,data,label){
+
+new Chart(document.getElementById(id),{
+
+type:'line',
+
+data:{
+labels:labels,
+
+datasets:[{
+
+label:label,
+data:data,
+
+borderColor:'#2e7fbd',
+backgroundColor:'rgba(46,127,189,.10)',
+
+pointBackgroundColor:'#12365a',
+pointRadius:4,
+
+borderWidth:3,
+
+tension:.25,
+
+fill:true
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+maintainAspectRatio:false,
+
+plugins:{
+legend:{
+display:true
+}
+},
+
+scales:{
+
+y:{
+beginAtZero:false,
+grid:{
+color:'#e7edf1'
+}
+},
+
+x:{
+grid:{
+display:false
+}
+}
+
+}
+
+}
+
+});
+
+}
+
+chartLine(
+'ipcChart',
+ipcLabels,
+ipcVals,
+'IPC mensal (%)'
+);
+
+chartLine(
+'rateChart',
+rateLabels,
+rateVals,
+'Taxa de política (%)'
+);
+
+const fiscalLabels=['2017','2018','2019','2020','2021','2022','2023','2024'];
+const fiscalPrimary=[-3.8,-2.3,-0.4,-6.4,-3.0,-2.0,-2.7,1.8];
+const fiscalFinancial=[-6.0,-4.9,-3.8,-8.4,-4.5,-3.8,-4.4,0.3];
+
+function chartFiscal(){
+new Chart(document.getElementById('fiscalChart'),{
+type:'line',
+data:{labels:fiscalLabels,datasets:[
+{label:'Resultado primário (% do PIB)',data:fiscalPrimary,borderColor:'#2e7fbd',backgroundColor:'rgba(46,127,189,.08)',pointBackgroundColor:'#12365a',pointRadius:4,borderWidth:3,tension:.25,fill:false},
+{label:'Resultado financeiro (% do PIB)',data:fiscalFinancial,borderColor:'#3b8d72',backgroundColor:'rgba(59,141,114,.08)',pointBackgroundColor:'#3b8d72',pointRadius:4,borderWidth:3,tension:.25,fill:false}
+]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}},scales:{y:{grid:{color:'#e7edf1'},title:{display:true,text:'% do PIB'}},x:{grid:{display:false}}}}
+});
+}
+
+const exchangeLabels=['2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+const exchangeVals=[18.6,37.8,59.9,84.1,102.75,177.1283,808.4833,1032.50,1459.4,1547.03];
+
+function chartExchange(){
+new Chart(document.getElementById('exchangeChart'),{
+type:'line',
+data:{labels:exchangeLabels,datasets:[{label:'Pesos por US$ 1',data:exchangeVals,borderColor:'#c99b3c',backgroundColor:'rgba(201,155,60,.08)',pointBackgroundColor:'#12365a',pointRadius:4,borderWidth:3,tension:.25,fill:false}]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}},scales:{y:{beginAtZero:false,grid:{color:'#e7edf1'}},x:{grid:{display:false}}}}
+});
+}
+
+chartFiscal();
+chartExchange();
+
+
+
+/* =====================================================
+   NAVEGAÇÃO
+====================================================== */
+
+function show(id,btn){
+
+document
+.querySelectorAll('section')
+.forEach(s=>s.classList.remove('activeSection'));
+
+document
+.getElementById(id)
+.classList.add('activeSection');
+
+
+document
+.querySelectorAll('nav button')
+.forEach(b=>b.classList.remove('active'));
+
+btn.classList.add('active');
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+
+
+/* =====================================================
+   TIMELINE
+====================================================== */
+
+const events=[
+
+[
+'2017',
+'Metas de inflação',
+'Inflação acima da meta levou o BCRA a elevar a taxa e utilizar a política monetária como instrumento central.'
+],
+
+[
+'2018',
+'Crise cambial',
+'A pressão sobre o peso e a fuga de capitais alteraram profundamente a condução monetária.'
+],
+
+[
+'2019',
+'Mudança de regime',
+'O controle cambial ganhou peso diante da instabilidade macroeconômica.'
+],
+
+[
+'2020',
+'Pandemia',
+'Queda da atividade e forte resposta fiscal e monetária.'
+],
+
+[
+'2021',
+'Recuperação',
+'A atividade voltou a crescer, mas as pressões inflacionárias permaneceram.'
+],
+
+[
+'2022',
+'Inflação elevada',
+'Pressões internacionais e fatores domésticos ampliaram a inflação.'
+],
+
+[
+'2023',
+'Nova estratégia',
+'A partir de dezembro, o governo Milei iniciou uma estratégia de estabilização baseada no ajuste fiscal e na mudança da política monetária.'
+],
+
+[
+'2024',
+'Desinflação',
+'A política econômica buscou reduzir a inflação e reorganizar as contas públicas e monetárias.'
+],
+
+[
+'2025',
+'Estabilização',
+'Fiscal, moeda e câmbio passaram a operar dentro de uma estratégia de estabilização.'
+],
+
+[
+'2026',
+'Desinflação + atividade',
+'O desafio passou a ser sustentar a estabilidade sem perder crescimento e emprego.'
+]
+
+];
+
+
+const tl=document.getElementById('timeline');
+
+
+events.forEach((e,i)=>{
+
+let d=document.createElement('div');
+
+d.className='titem';
+
+d.innerHTML=`
+
+<div class="tdate">
+${e[0]}
+</div>
+
+<div class="dot"></div>
+
+<div class="tevent">
+${e[1]}
+</div>
+
+`;
+
+d.onclick=()=>{
+
+document
+.querySelectorAll('.titem')
+.forEach(x=>x.classList.remove('sel'));
+
+d.classList.add('sel');
+
+document.getElementById('histText').innerHTML=`
+
+<b>
+${e[1]}
+</b>
+
+<br>
+
+${e[2]}
+
+`;
+
+};
+
+tl.appendChild(d);
+
+});
+
+
+
+/* =====================================================
+   ABRIR / FECHAR PRESIDENTES
+====================================================== */
+
+document
+.querySelectorAll('.presidentHeader')
+.forEach(header=>{
+
+header.addEventListener('click',function(){
+
+const card=this.parentElement;
+
+card.classList.toggle('open');
+
+});
+
+});
+
+
+
+/* =====================================================
+   POLÍTICA EXPANSIONISTA / CONTRACIONISTA
+====================================================== */
+
+function setPolicy(policy,btn){
+
+document
+.querySelectorAll('.policyBtn')
+.forEach(b=>b.classList.remove('active'));
+
+btn.classList.add('active');
+
+
+const isCurve=document.getElementById('isCurve');
+const lmCurve=document.getElementById('lmCurve');
+
+const adCurve=document.getElementById('adCurve');
+const adShift=document.getElementById('adShift');
+
+const eqPoint=document.getElementById('eqPoint');
+
+const isExplanation=document.getElementById('isExplanation');
+const adExplanation=document.getElementById('adExplanation');
+
+const mechanism=document.getElementById('mechanism');
+
+
+if(policy==='contracionista'){
+
+/* LM desloca para cima/esquerda */
+
+lmCurve.setAttribute(
+'x1','110'
+);
+
+lmCurve.setAttribute(
+'y1','250'
+);
+
+lmCurve.setAttribute(
+'x2','335'
+);
+
+lmCurve.setAttribute(
+'y2','55'
+);
+
+
+/* AD para esquerda */
+
+adShift.setAttribute(
+'x1','100'
+);
+
+adShift.setAttribute(
+'y1','120'
+);
+
+adShift.setAttribute(
+'x2','410'
+);
+
+adShift.setAttribute(
+'y2','300'
+);
+
+
+eqPoint.setAttribute(
+'cx','245'
+);
+
+eqPoint.setAttribute(
+'cy','205'
+);
+
+
+isExplanation.innerHTML=`
+
+<b>
+Política contracionista:
+</b>
+
+o Banco Central aumenta a taxa de juros.
+O investimento tende a cair, reduzindo a demanda agregada
+e a atividade.
+
+`;
+
+
+adExplanation.innerHTML=`
+
+<b>
+Resultado no curto prazo:
+</b>
+
+a demanda agregada se desloca para a esquerda.
+O produto tende a cair e a pressão sobre o nível de preços
+tende a diminuir.
+
+`;
+
+
+mechanism.innerHTML=`
+
+<div class="mechanismBox">
+Juros ↑
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Investimento ↓
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Demanda ↓
+</div>
+
+`;
+
+}
+
+else{
+
+/* LM desloca para baixo/direita */
+
+lmCurve.setAttribute(
+'x1','170'
+);
+
+lmCurve.setAttribute(
+'y1','295'
+);
+
+lmCurve.setAttribute(
+'x2','400'
+);
+
+lmCurve.setAttribute(
+'y2','85'
+);
+
+
+/* AD para direita */
+
+adShift.setAttribute(
+'x1','155'
+);
+
+adShift.setAttribute(
+'y1','65'
+);
+
+adShift.setAttribute(
+'x2','450'
+);
+
+adShift.setAttribute(
+'y2','250'
+);
+
+
+eqPoint.setAttribute(
+'cx','325'
+);
+
+eqPoint.setAttribute(
+'cy','155'
+);
+
+
+isExplanation.innerHTML=`
+
+<b>
+Política expansionista:
+</b>
+
+uma redução dos juros aumenta o incentivo ao investimento
+e pode elevar a demanda agregada e o produto no curto prazo.
+
+`;
+
+
+adExplanation.innerHTML=`
+
+<b>
+Resultado no curto prazo:
+</b>
+
+a demanda agregada se desloca para a direita.
+O produto tende a aumentar, mas pode haver maior pressão
+sobre o nível de preços.
+
+`;
+
+
+mechanism.innerHTML=`
+
+<div class="mechanismBox">
+Juros ↓
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Investimento ↑
+</div>
+
+<div class="mechanismArrow">
+→
+</div>
+
+<div class="mechanismBox">
+Demanda ↑
+</div>
+
+`;
+
+}
+
+}
+
+
+
+/* =====================================================
+   UPLOAD CSV
+====================================================== */
+
+document
+.getElementById('csvFile')
+.addEventListener('change',function(){
+
+const f=this.files[0];
+
+if(!f)return;
+
+
+const r=new FileReader();
+
+r.onload=()=>{
+
+document
+.getElementById('uploadStatus')
+.style.display='block';
+
+
+document
+.getElementById('uploadStatus')
+.innerHTML=`
+
+<b>
+Arquivo carregado.
+</b>
+
+Sua base foi lida pelo navegador.
+Para usar as séries nos gráficos, mantenha exatamente
+os nomes de colunas indicados acima.
+
+`;
+
+};
+
+r.readAsText(f);
+
+});
+
+</script>
+
+</body>
+</html>
